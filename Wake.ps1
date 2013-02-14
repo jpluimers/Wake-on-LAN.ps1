@@ -64,19 +64,19 @@ function Send-Packet([string]$MacAddress)
         $MAC = [Net.NetworkInformation.PhysicalAddress]::Parse($MacAddress.ToUpper())
  
         ## Construct the Magic Packet frame
-        $Frame = [byte[]]@(255,255,255, 255,255,255);
-        $Frame += ($MAC.GetAddressBytes()*16)
+        $Packet =  [Byte[]](,0xFF*6)+($MAC.GetAddressBytes()*16)
  
         ## Broadcast UDP packets to the IP endpoint of the machine
-            $UdpClient.Send($Frame, $Frame.Length, $IPEndPoint) | Out-Null
+        $UdpClient.Send($Packet, $Packet.Length, $IPEndPoint) | Out-Null
+        $UdpClient.Close()
     }
     catch
     {
+        $UdpClient.Dispose()
         $Error | Write-Error;
     }
 }
- 
 
-    ## Send magic packet to wake machine
-    Write "Sending magic packet to $MacAddress"
-    Send-Packet $MacAddress
+## Send magic packet to wake machine
+Write "Sending magic packet to $MacAddress"
+Send-Packet $MacAddress
