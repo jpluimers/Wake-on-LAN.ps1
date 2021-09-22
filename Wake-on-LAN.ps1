@@ -1,6 +1,6 @@
 #######################################################
 ##
-## Wake.ps1, v1.0, 2013
+## Wake-on-LAN.ps1, v1.0, 2013
 ##
 ## Adapted by Ammaar Limbada
 ## Original Author: Matthijs ten Seldam, Microsoft (see: http://blogs.technet.com/matthts)

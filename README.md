@@ -1,4 +1,4 @@
-# `Wake.ps1`: a [Wake-on-LAN](https://en.wikipedia.org/wiki/Wake-on-LAN) PowerShell script
+# `Wake-on-LAN.ps1`: a [Wake-on-LAN](https://en.wikipedia.org/wiki/Wake-on-LAN) PowerShell script
 
 This script originated is a modification [[Wayback]](https://web.archive.org/web/20210909182144/https://docs.microsoft.com/en-gb/archive/blogs/matthts/wakeup-machines-a-powershell-script-for-wake-on-lan) [`WakeUp-Machines.ps1`](https://docs.microsoft.com/en-gb/archive/blogs/matthts/wakeup-machines-a-powershell-script-for-wake-on-lan) by [Matthijs ten Seldam](https://nl.linkedin.com/in/matthts), Microsoft that has the drawback of requiring a text file with the machines to wake up, and (before his change) the original reliance on the above mentioned [[Wayback]](https://web.archive.org/web/20210914123109/https://www.depicus.com/wake-on-lan/wake-on-lan-cmd) [`WolCmd.exe`](https://www.depicus.com/wake-on-lan/wake-on-lan-cmd) in the current directory.
 
