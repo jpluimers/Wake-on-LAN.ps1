@@ -1,8 +1,8 @@
 #######################################################
 ##
-## Wake-on-LAN.ps1, v1.0, 2013
+## Wake-on-LAN.ps1, v1.1, 2021
 ##
-## Adapted by Ammaar Limbada
+## Adapted by Ammaar Limbada and Jeroen Wiert Pluimers
 ## Original Author: Matthijs ten Seldam, Microsoft (see: http://blogs.technet.com/matthts)
 ##
 #######################################################
@@ -27,7 +27,12 @@ None
 None
  
 .NOTES
-Make sure the MAC addresses supplied don't contain "-" or ".".
+Supports all these MAC addresses formats:
+- xx:xx:xx:xx:xx:xx (canonical)
+- xx-xx-xx-xx-xx-xx (Windows)
+- xxxxxx-xxxxxx (Hewlett-Packard switches)
+- xxxxxxxxxxxx (Intel Landesk)
+- xxxx.xxxx.xxxx (Cisco)
 #>
  
  
@@ -38,7 +43,7 @@ param(
  
 Set-StrictMode -Version Latest
 
-function Send-Packet([string]$MacAddress) {
+function Send-Packet([string]$MacAddressString) {
     <#
     .SYNOPSIS
     Sends a number of magic packets using UDP broadcast.
@@ -46,8 +51,8 @@ function Send-Packet([string]$MacAddress) {
     .DESCRIPTION
     Send-Packet sends a specified number of magic packets to a MAC address in order to wake up the machine.  
  
-    .PARAMETER MacAddress
-    The MAC address of the machine to wake up.
+    .PARAMETER MacAddressString
+    String with the MAC address of the machine to wake up.
     #>
  
     try {
@@ -58,9 +63,11 @@ function Send-Packet([string]$MacAddress) {
  
         ## Create IP endpoints for each port
         $IPEndPoint = New-Object Net.IPEndPoint $Broadcast, 9
+
+        $BareMacAddressString = $MacAddress.ToUpper() -split "[:\.-]" -join "" # \ because it is a regular expression
  
-        ## Construct physical address instance for the MAC address of the machine (string to byte array)
-        $MAC = [Net.NetworkInformation.PhysicalAddress]::Parse($MacAddress.ToUpper())
+        ## Construct physical address instance for the hardware MAC address of the machine (string to byte array)
+        $MAC = [Net.NetworkInformation.PhysicalAddress]::Parse($BareMacAddressString)
  
         ## Construct the Magic Packet frame
         $Packet = [Byte[]](, 0xFF * 6) + ($MAC.GetAddressBytes() * 16)
